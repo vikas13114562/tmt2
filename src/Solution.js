@@ -13,6 +13,8 @@ import {
   CircularProgress,
 } from "@mui/material";
 
+// import data
+
 import { products, categories } from "./data";
 
 const priceRangeOptions = [
@@ -23,6 +25,7 @@ const priceRangeOptions = [
 ];
 
 const Solution = () => {
+  
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedPriceRange, setSelectedPriceRange] = useState("Any");
@@ -57,8 +60,8 @@ const Solution = () => {
       }
 
       setFilteredProducts(filtered);
-      setLoading(false); // Stop loader
-    }, 1000); // Simulate loading delay
+      setLoading(false); 
+    }, 1000); 
   };
 
   // Reset filters
@@ -134,7 +137,40 @@ const Solution = () => {
             Reset
           </Button>
         </Grid>
-        
+        {loading ? (
+          <Grid item xs={12}>
+            <CircularProgress />
+          </Grid>
+        ) : filteredProducts.length === 0 ? (
+          <Grid item xs={12}>
+            <Typography variant="subtitle1">
+              No products found matching the criteria.
+            </Typography>
+          </Grid>
+        ) : (
+          filteredProducts.map((product) => (
+            <Grid item xs={12} sm={6} md={4} key={product.name}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6">{product.name}</Typography>
+                  <Typography variant="subtitle1">
+                    {product.category}
+                  </Typography>
+                  <Typography>{`$${product.price}`}</Typography>
+                  {product.available ? (
+                    <Typography variant="subtitle2" color="primary">
+                      Available
+                    </Typography>
+                  ) : (
+                    <Typography variant="subtitle2" color="error">
+                      Sold Out
+                    </Typography>
+                  )}
+                </CardContent>
+              </Card>
+            </Grid>
+          ))
+        )}
       </Grid>
     </div>
   );
